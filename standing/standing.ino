@@ -58,19 +58,19 @@ void setup() {
 }
 
 void loop() {
-  left_hip_1.write(97);
-  left_hip_2.write(93);
-  left_hip_3.write(90);
-  left_knee.write(85);
-  left_ankle_1.write(95);
-  left_ankle_2.write(95);
+  left_hip_1.write(97); //97 + is curve in - is curve out
+  left_hip_2.write(93); //93 + is back - is forward
+  left_hip_3.write(90); //90 + is in - is out
+  left_knee.write(85); //85 + is back - is forward
+  left_ankle_1.write(95); //95 + is in - is out
+  left_ankle_2.write(95); //95 + is back - is forward
 
-  right_hip_1.write(90);
-  right_hip_2.write(105);
-  right_hip_3.write(90);
-  right_knee.write(85);
-  right_ankle_1.write(90);
-  right_ankle_2.write(75);
+  right_hip_1.write(90); //90 + is curve out - is curve in
+  right_hip_2.write(105); //105 + is forward - is back
+  right_hip_3.write(90); //90 + is out - is in
+  right_knee.write(85); //85 + is forward - is back
+  right_ankle_1.write(90); //90 + is in - is out
+  right_ankle_2.write(75); //75 + is forward - is back
 
   sensors_event_t accel;
   sensors_event_t gyro;
