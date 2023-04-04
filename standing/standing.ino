@@ -1,5 +1,6 @@
 #include <Servo.h>
 #include <Adafruit_LSM6DSOX.h>
+#include <math.h>
 
 // For SPI mode, we need a CS pin
 #define LSM_CS 10
@@ -57,18 +58,19 @@ void setup() {
 }
 
 void loop() {
-  left_hip_1.write(90);
-  left_hip_2.write(90);
+  left_hip_1.write(97);
+  left_hip_2.write(93);
   left_hip_3.write(90);
-  left_knee.write(80);
-  left_ankle_1.write(90);
-  left_ankle_2.write(90);
+  left_knee.write(85);
+  left_ankle_1.write(95);
+  left_ankle_2.write(95);
+
   right_hip_1.write(90);
-  right_hip_2.write(100);
+  right_hip_2.write(105);
   right_hip_3.write(90);
-  right_knee.write(100);
+  right_knee.write(85);
   right_ankle_1.write(90);
-  right_ankle_2.write(60);
+  right_ankle_2.write(75);
 
   sensors_event_t accel;
   sensors_event_t gyro;
