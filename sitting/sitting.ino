@@ -36,7 +36,7 @@ float right_hip_2_angle;
 float right_knee_angle;
 float right_ankle_2_angle;
 bool increasing = false;
-float increment = 0.1;
+float increment = 0.05;
 
 
 float getAnkleAngle(float A, float a, float b) {
@@ -86,19 +86,55 @@ void setup() {
 }
 
 void loop() {
-  left_hip_1.write(97); //97 + is curve in - is curve out
-  left_hip_2.write(93); //93 + is back - is forward
-  left_hip_3.write(90); //90 + is in - is out
-  left_knee.write(32); //32 + is back - is forward
-  left_ankle_1.write(95); //95 + is in - is out
-  left_ankle_2.write(95); //95 + is back - is forward
+  left_hip_1.write(97);
+  //left_hip_2.write(93);
+  left_hip_3.write(90);
+  //left_knee.write(85);
+  left_ankle_1.write(95);
+  //left_ankle_2.write(95); 
 
-  right_hip_1.write(90); //90 + is curve out - is curve in
-  right_hip_2.write(105); //105 + is forward - is back
-  right_hip_3.write(90); //90 + is out - is in
-  right_knee.write(148); //148 + is forward - is back
-  right_ankle_1.write(90); //90 + is in - is out
-  right_ankle_2.write(75); //75 + is forward - is back
+  right_hip_1.write(90);
+  //right_hip_2.write(105);
+  right_hip_3.write(90);
+  //right_knee.write(85);
+  right_ankle_1.write(90);
+  //right_ankle_2.write(75);
+
+  B = getDegrees(getAnkleAngle(getRadians(A), a, b));
+  kneeAngle = A + B;
+  left_hip_2_angle = (93-90) + A;
+  left_knee_angle = (32-90) + (180 + (180 - kneeAngle) - 90);
+  left_ankle_2_angle = (95-90) + B;
+
+  right_hip_2_angle = (105-90) + (180 - A);
+  right_knee_angle = (148-90) + kneeAngle - 90;
+  right_ankle_2_angle = (75-90) + (180 - B);
+
+  left_hip_2.write(left_hip_2_angle);
+  left_knee.write(left_knee_angle);
+  left_ankle_2.write(left_ankle_2_angle);
+
+  right_hip_2.write(right_hip_2_angle);
+  right_ankle_2.write(right_ankle_2_angle);
+  right_knee.write(right_knee_angle);
+  /*
+  Serial.print("Left hip: " );
+  Serial.println(left_hip_2_angle);
+  Serial.print("Left knee: " );
+  Serial.println(left_knee_angle);
+  Serial.print("Left ankle: " );
+  Serial.println(left_ankle_2_angle);
+  
+  Serial.print("Right hip: " );
+  Serial.println(right_hip_2_angle);
+  Serial.print("Right knee: " );
+  Serial.println(right_knee_angle);
+  Serial.print("Right ankle: " );
+  Serial.println(right_ankle_2_angle);
+
+  Serial.print("A: ");
+  Serial.println(A);
+  */
   /*
 
   sensors_event_t accel;
@@ -125,7 +161,7 @@ void loop() {
   else {
     A -= increment;
   }
-  if (A <= 10) {
+  if (A <= 15) {
     //Serial.println("sitting down, increasing");
     increasing = true;
   }
