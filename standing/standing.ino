@@ -14,15 +14,43 @@ Adafruit_LSM6DSOX sox;
 Servo left_hip_1;
 Servo left_hip_2;
 Servo left_hip_3;
-Servo left_knee;
+Servo left_knee; // higher is back
 Servo left_ankle_1;
 Servo left_ankle_2;
 Servo right_hip_1;
 Servo right_hip_2;
 Servo right_hip_3;
-Servo right_knee;
+Servo right_knee; // Higher is forward
 Servo right_ankle_1;
 Servo right_ankle_2;
+
+float a = 106;
+float b = 144.5;
+float A = 90;
+float B;
+float kneeAngle;
+float left_hip_2_angle;
+float left_knee_angle;
+float left_ankle_2_angle;
+float right_hip_2_angle;
+float right_knee_angle;
+float right_ankle_2_angle;
+bool increasing = false;
+float increment = 0.1;
+
+
+float getAnkleAngle(float A, float a, float b) {
+  return M_PI/2 - asin(a * sin(M_PI/2-A) / b);
+}
+
+float getRadians(float x) {
+  return x * M_PI / 180;
+}
+
+float getDegrees(float x) {
+  return x * 180 / M_PI;
+}
+
 
 void setup() {
 
@@ -71,6 +99,7 @@ void loop() {
   right_knee.write(148); //148 + is forward - is back
   right_ankle_1.write(90); //90 + is in - is out
   right_ankle_2.write(75); //75 + is forward - is back
+  /*
 
   sensors_event_t accel;
   sensors_event_t gyro;
@@ -89,5 +118,46 @@ void loop() {
   Serial.print(","); Serial.print(gyro.gyro.y);
   Serial.print(","); Serial.print(gyro.gyro.z);
   Serial.println();
-  delayMicroseconds(10000);
+  delayMicroseconds(10000);*/
+  if (increasing) {
+    A += increment;
+  }
+  else {
+    A -= increment;
+  }
+  if (A <= 10) {
+    //Serial.println("sitting down, increasing");
+    increasing = true;
+  }
+  /*
+  if (left_hip_2_angle < 0) {
+    Serial.println("left_hip_2 past 0, increasing");
+    increasing = true;
+  }
+  else if (left_knee_angle > 180) {
+    Serial.println("left_knee past 180, decreasing");
+    increasing = false;
+  }
+  else if (left_ankle_2_angle < 0) {
+    Serial.println("left_ankle_2 past 0, increasing");
+    increasing = true;
+  }
+  else if (right_hip_2_angle > 180) {
+    Serial.println("right_hip_2 past 180, decreasing");
+    increasing = false;
+  }
+  else if (right_knee_angle < 0) {
+    Serial.println("right_knee past 0, increasing");
+    increasing = true;
+  }
+  else if (right_ankle_2_angle > 180) {
+    Serial.println("right_ankle_2 past 180, decreasing");
+    increasing = false;
+  }
+  */
+  else if (A >= 90) {
+    //Serial.println("standing up, decreasing");
+    increasing = false;
+  }
+  delay(1);
 }
