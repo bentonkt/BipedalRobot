@@ -141,7 +141,7 @@ void loop() {
     delay(1);
   }
 
-  for (float A = squat_angle; A >= lowest_angle; A -= increment/2) {
+  /*for (float A = squat_angle; A >= lowest_angle; A -= increment/2) {
     left_hip_1.write(97);
     //left_hip_2.write(93);
     left_hip_3.write(90);
@@ -157,8 +157,10 @@ void loop() {
     //right_ankle_2.write(75);
 
     left_hip_2_angle = (93-90) + A;
+    //left_ankle_2_angle = left_ankle_2_angle + increment/5;
 
     right_hip_2_angle = (105-90) + (180 - A);
+    //right_ankle_2_angle = right_ankle_2_angle - increment/5;
 
     left_hip_2.write(left_hip_2_angle);
     left_knee.write(left_knee_angle);
@@ -169,7 +171,7 @@ void loop() {
     right_knee.write(right_knee_angle);
 
     delay(1);
-  }
+  }*/
 
 
   for (int reps = 0; reps <= 4; reps++) {
@@ -243,7 +245,7 @@ void loop() {
   }
 
 
-  for (float A = lowest_angle; A <= squat_angle; A += increment/2) {
+  /*for (float A = lowest_angle; A <= squat_angle; A += increment/2) {
     left_hip_1.write(97);
     //left_hip_2.write(93);
     left_hip_3.write(90);
@@ -259,8 +261,10 @@ void loop() {
     //right_ankle_2.write(75);
 
     left_hip_2_angle = (93-90) + A;
+    //left_ankle_2_angle = left_ankle_2_angle - increment/5;
 
     right_hip_2_angle = (105-90) + (180 - A);
+    //right_ankle_2_angle = right_ankle_2_angle + increment/5;
 
     left_hip_2.write(left_hip_2_angle);
     left_knee.write(left_knee_angle);
@@ -271,7 +275,7 @@ void loop() {
     right_knee.write(right_knee_angle);
 
     delay(1);
-  }
+  }*/
 
   for (float A = squat_angle; A <= 90; A += increment/2) {
     left_hip_1.write(97);
