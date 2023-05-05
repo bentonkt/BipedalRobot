@@ -29,7 +29,7 @@ Servo right_knee; // Higher is forward
 Servo right_ankle_1;
 Servo right_ankle_2;
 
-float stepdata[][12] = {
+const float stepdata[][12] PROGMEM = {
 {-0.000000, -0.000898, -0.046142, 0.094714, -0.048572, 0.000898, -0.000000, -0.000898, -0.046142, 0.094714, -0.048572, 0.000898}, 
 {-0.000000, -0.003775, -0.094422, 0.193830, -0.099408, 0.003775, -0.000000, -0.003775, -0.094422, 0.193830, -0.099408, 0.003775}, 
 {-0.000000, -0.008411, -0.140461, 0.288368, -0.147907, 0.008411, -0.000000, -0.008411, -0.140461, 0.288368, -0.147907, 0.008411}, 
@@ -235,29 +235,23 @@ float getDegrees(float x) {
 }
 
 void translateangles(float a[], int a_size) {
-  a[0] = (a[0] * (-1) + 97 * M_PI / 180) * 180 / M_PI;
-  a[1] = (a[1] * (-1) + M_PI * 90 / 180) * 180 / M_PI;
-  a[2] = (a[2] + 93 * M_PI / 180) * 180 / M_PI;
-  a[3] = (a[3] + 32 * M_PI / 180) * 180 / M_PI;
-  a[4] = (a[4] + 95 * M_PI / 180) * 180 / M_PI;
+  a[0] = (a[0] * (-1) + 97 * M_PI / 180.0) * 180 / M_PI;
+  a[1] = (a[1] * (-1) + M_PI * 90 / 180.0) * 180 / M_PI;
+  a[2] = (a[2] + 93 * M_PI / 180.0) * 180 / M_PI;
+  a[3] = (a[3] + 32 * M_PI / 180.0) * 180 / M_PI;
+  a[4] = (a[4] + 95 * M_PI / 180.0) * 180 / M_PI;
   a[5] = (a[5] * (-1) + 95 * M_PI / 180) * 180 / M_PI;
-  a[6] = (a[6] + 90 * M_PI / 180) * 180 / M_PI;
-  a[7] = (a[7] + M_PI * 90 / 180) * 180 / M_PI;
-  a[8] = (a[8] * (-1) + 105 * M_PI / 180) * 180 / M_PI;
-  a[9] = (a[9] * (-1) + 148 * M_PI / 180) * 180 / M_PI;
-  a[10] = (a[10] * (-1) + 90 * M_PI / 180) * 180 / M_PI;
-  a[11] = (a[11] + 75 * M_PI / 180) * 180 / M_PI;
+  a[6] = (a[6] + 90 * M_PI / 180.0) * 180 / M_PI;
+  a[7] = (a[7] + M_PI * 90 / 180.0) * 180 / M_PI;
+  a[8] = (a[8] * (-1) + 105 * M_PI / 180.0) * 180 / M_PI;
+  a[9] = (a[9] * (-1) + 148 * M_PI / 180.0) * 180 / M_PI;
+  a[10] = (a[10] * (-1) + 90 * M_PI / 180.0) * 180 / M_PI;
+  a[11] = (a[11] + 75 * M_PI / 180.0) * 180 / M_PI;
 
   // Convert to degrees
   for (int i = 0; i < sizeof(a); i += 1) {
     a[i] = a[i] * 180 / M_PI;
   }
-  
-  // Serial.print("Elements: ");
-  // for (int i = 0; i < sizeof(a); i++) {
-  //   Serial.print(a[i]);
-  // }
-
 }
 
 
@@ -270,9 +264,6 @@ void setup() {
   Serial.println("Adafruit LSM6DSOX test!");
 
   if (!sox.begin_I2C()) {
-    // if (!sox.begin_SPI(LSM_CS)) {
-    // if (!sox.begin_SPI(LSM_CS, LSM_SCK, LSM_MISO, LSM_MOSI)) {
-    // Serial.println("Failed to find LSM6DSOX chip");
     while (1) {
       delay(10);
     }
@@ -292,21 +283,6 @@ void setup() {
   right_knee.attach(11);
   right_ankle_1.attach(12);
   right_ankle_2.attach(13);
-
-
-  // // Scan files for test values.
-  // FILE* file = fopen("JointAngles.txt", "r");
-  // if (file == Null) {
-  //   Serial.println("Error opening file.");
-  // }
-
-  // float array[ROWS][COLS];
-
-  // for (int i = 0; i < ROWS; i++) {
-  //   for (int ii = 0; ii < COLS; ii++) {
-
-  //   }
-  // }
 
   left_hip_1.write(97); //97 + is curve in - is curve out
   left_hip_2.write(93); //93 + is back - is forward
@@ -328,18 +304,27 @@ void loop() {
 
   for (int i = 0; i < 12; i++) {
     a[i] = stepdata[stepdataindex][i];
-  }
+    // Serial.print(a[i]);
+    // Serial.print(", ");
+    }
   stepdataindex += 1;
+  if (stepdataindex >= 174) {
+    stepdataindex = 0;
+  }
+  //Serial.println();
+
 
   float a[] = {0.000000, 0.001925, -0.749515, 1.463467, -0.713951, -0.001925, 0.000000, 0.001925, -0.749515, 1.463467, -0.713951, -0.001925};
   translateangles(a, sizeof(a));
 
-  left_hip_1.write(a[0]);
-  left_hip_2.write(a[2]);
-  left_hip_3.write(a[1]);
-  left_knee.write(a[3]);
-  left_ankle_1.write(a[5]);
-  left_ankle_2.write(a[4]);
+  Serial.println(a[9]);
+
+  // left_hip_1.write(a[0]);
+  // left_hip_2.write(a[2]);
+  // left_hip_3.write(a[1]);
+  // left_knee.write(a[3]);
+  // left_ankle_1.write(a[5]);
+  // left_ankle_2.write(a[4]);
   
   right_hip_1.write(a[6]);
   right_hip_2.write(a[8]);
