@@ -6,9 +6,9 @@
 <xacro:include filename="$(find URDF_description)/urdf/URDF.gazebo" />
 <link name="base_link">
   <inertial>
-    <origin xyz="-0.01169404429153978 0.009220039121267613 0.3600949612031604" rpy="0 0 0"/>
-    <mass value="2.0327924273377787"/>
-    <inertia ixx="0.003401" iyy="0.001014" izz="0.003004" ixy="-2e-06" iyz="-2.1e-05" ixz="2e-06"/>
+    <origin xyz="-0.01170349147802454 0.00919101006246966 0.3601189118615212" rpy="0 0 0"/>
+    <mass value="2.0116684467522163"/>
+    <inertia ixx="0.003382" iyy="0.001011" izz="0.002986" ixy="-2e-06" iyz="-2.3e-05" ixz="1e-06"/>
   </inertial>
   <visual>
     <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -24,5 +24,33 @@
     </geometry>
   </collision>
 </link>
+
+<link name="Component69_1">
+  <inertial>
+    <origin xyz="-0.009598415522157608 0.002928525146232149 -0.010242131111288355" rpy="0 0 0"/>
+    <mass value="0.2603124026535063"/>
+    <inertia ixx="4.2e-05" iyy="4.6e-05" izz="7.1e-05" ixy="1e-06" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.011622 0.028932 -0.310987" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://URDF_description/meshes/Component69_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.011622 0.028932 -0.310987" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://URDF_description/meshes/Component69_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="Revolute 43" type="continuous">
+  <origin xyz="-0.011622 -0.028932 0.310987" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Component69_1"/>
+  <axis xyz="-0.0 0.0 -1.0"/>
+</joint>
 
 </robot>
