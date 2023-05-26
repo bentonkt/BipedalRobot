@@ -1,0 +1,55 @@
+URDF_controller:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  # Position Controllers --------------------------------------
+  Revolute 46_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Revolute 46
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Revolute 54_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Revolute 54
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Revolute 64_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Revolute 64
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Revolute 65_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Revolute 65
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Revolute 66_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Revolute 66
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Revolute 67_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Revolute 67
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Revolute 68_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Revolute 68
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Revolute 69_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Revolute 69
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Revolute 70_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Revolute 70
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Revolute 71_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Revolute 71
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Revolute 72_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Revolute 72
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  Revolute 73_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: Revolute 73
+    pid: {p: 100.0, i: 0.01, d: 10.0}
