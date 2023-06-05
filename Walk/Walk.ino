@@ -14,8 +14,10 @@
 #define ROWS = 174
 #define COLS = 6
 
+// the sensor
 Adafruit_LSM6DSOX sox;
 
+// the servos
 Servo left_hip_1;
 Servo left_hip_2;
 Servo left_hip_3;
@@ -29,8 +31,8 @@ Servo right_knee; // Higher is forward
 Servo right_ankle_1;
 Servo right_ankle_2;
 
-//const int stepdata[][12] PROGMEM = {
-int stepdata[][12] = {
+//this is the array of data for movement from the simulink simulation
+int step_data[][12] = {
 {-0.0, -8.98, -461.42, 947.1400000000001, -485.71999999999997, 8.98, -0.0, -8.98, -461.42, 947.1400000000001, -485.71999999999997, -485.71999999999997},
 {-0.0, -37.75, -944.22, 1938.3, -994.0799999999999, 37.75, -0.0, -37.75, -944.22, 1938.3, -994.0799999999999, -994.0799999999999},
 {-0.0, -84.11, -1404.6100000000001, 2883.6800000000003, -1479.0700000000002, 84.11, -0.0, -84.11, -1404.6100000000001, 2883.6800000000003, -1479.0700000000002, -1479.0700000000002},
@@ -207,34 +209,10 @@ int stepdata[][12] = {
 {-0.0, -303.23, -2876.17, 9623.01, -6746.839999999999, 303.23, -0.0, -0.1, -6745.49, 9428.77, -2683.29, -2683.29}
 };
 
-float a[] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+// variable for the rolling index of the steps
+int step_data_index;
 
-//float a = 106;
-float b = 144.5;
-float A = 90;
-float B;
-float kneeAngle;
-float left_hip_2_angle;
-float left_knee_angle;
-float left_ankle_2_angle;
-float right_hip_2_angle;
-float right_knee_angle;
-float right_ankle_2_angle;
-bool increasing = false;
-float increment = 0.15;
-float squat_angle = 30;
-float lowest_angle = 15;
-float twerk_angle = 50;
-int stepdataindex;
-
-float getRadians(float x) {
-  return x * M_PI / 180;
-}
-
-float getDegrees(float x) {
-  return x * 180 / M_PI;
-}
-
+//turns a slice of the movement array into angles for the motors to read, a is for angles
 void translateangles(float a[], int a_size) {
   a[0] = (a[0] / 10000.0 * (-1) + 97 * M_PI / 180.0) * 180 / M_PI;
   a[1] = (a[1] / 10000.0 * (-1) + M_PI * 90 / 180.0) * 180 / M_PI;
@@ -249,34 +227,39 @@ void translateangles(float a[], int a_size) {
   a[10] = (a[11] / 10000.0 * (-1) + 90 * M_PI / 180.0) * 180 / M_PI;
   a[11] = (a[10] / 10000.0 + 75 * M_PI / 180.0) * 180 / M_PI;
 
-  // Convert to degrees
+  // print the angles
   for (int i = 0; i < 12; i += 1) {
-    //a[i] = a[i] * 180 / M_PI;
     Serial.print(a[i]);
     Serial.print(", ");
   }
   Serial.println();
 }
 
-
+//runs once as it first starts
 void setup() {
   
-  stepdataindex = 0;
+  // initialize step_data_index as 0
+  step_data_index = 0;
 
+  // begin a serial connection to print values to the computer
   Serial.begin(115200);
   while (!Serial)
     delay(10); // will pause Zero, Leonardo, etc until serial console opens
 
-  Serial.println("Adafruit LSM6DSOX test!");
+  // once it gets past this, the arduino is connected
+  Serial.println("Connected!");
 
+  // connect to the I2C protocol which the sensor uses
   if (!sox.begin_I2C()) {
     while (1) {
       delay(10);
     }
   }
 
+  // once it passes this, say the sensor is found
   Serial.println("LSM6DSOX Found!");
 
+  // attach all of the servos to the correct pin
   left_hip_1.attach(2);
   left_hip_2.attach(3);
   left_hip_3.attach(4);
@@ -290,6 +273,7 @@ void setup() {
   right_ankle_1.attach(12);
   right_ankle_2.attach(13);
 
+  // start the robot standing
   left_hip_1.write(97); //97 + is curve in - is curve out
   left_hip_2.write(93); //93 + is back - is forward
   left_hip_3.write(90); //90 + is in - is out
@@ -304,30 +288,33 @@ void setup() {
   right_ankle_1.write(90); //90 + is in - is out
   right_ankle_2.write(75); //75 + is forward - is back
 
+  // wait five seconds
   delay(5000);
 }
 
+// this part of the code runs continuously
 void loop() {
-
+  
+  // make a list, a, for the angles inside a slice of the movement data array
   for (int i = 0; i < 12; i++) {
-    a[i] = stepdata[stepdataindex][i];
-    //Serial.print(stepdata[stepdataindex][i]);
+    a[i] = step_data[step_data_index][i];
+    //Serial.print(step_data[step_data_index][i]);
     //Serial.print(a[i]);
     //Serial.print(", ");
     }
-  //Serial.println(stepdataindex);
+  //Serial.println(step_data_index);
 
-  stepdataindex = stepdataindex + 1;
-  if (stepdataindex >= 174) {
-    stepdataindex = 0;
+  // increment the movement data index, or reset it
+  step_data_index = step_data_index + 1;
+  if (step_data_index >= 174) {
+    step_data_index = 0;
   }
   //Serial.println();
 
-
-  //float a[] = {0.000000, 0.001925, -0.749515, 1.463467, -0.713951, -0.001925, 0.000000, 0.001925, -0.749515, 1.463467, -0.713951, -0.001925};
+  // turn the int angles into angles for the servos to read
   translateangles(a, sizeof(a));
 
-
+  // write the angles to each servo
   left_hip_1.write(a[0]);
   left_hip_2.write(a[2]);
   left_hip_3.write(a[1]);
@@ -342,5 +329,6 @@ void loop() {
   right_ankle_1.write(a[11]);
   right_ankle_2.write(a[10]);
 
+  // wait .04 seconds
   delay(40);
 }
